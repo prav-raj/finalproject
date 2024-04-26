@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NBA Teams</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('th').on('click', function(){
+                var column = $(this).data('column');
+                var order = $(this).data('order');
+                var isNumeric = $(this).data('numeric');
+                var text = $(this).html();
+                text = text.substring(0, text.length - 1);
+                
+                if(order == 'desc'){
+                    $(this).data('order', "asc");
+                    text += '&#9660';  
+                    sorting(column, order, isNumeric);
+                } else {
+                    $(this).data('order', "desc");
+                    text += '&#9650';  
+                    sorting(column, order, isNumeric);
+                }
+                $(this).html(text);
+            });
+    
+            function sorting(column, order, isNumeric){
+                var rows = $('#nba_table tbody tr').get();
+                rows.sort(function(a, b){
+                    var A = $(a).children('td').eq(column).text();
+                    var B = $(b).children('td').eq(column).text();
+    
+                    if(isNumeric) {
+                        A = parseInt(A);  
+                        B = parseInt(B);
+                    } else {
+                        A = A.toUpperCase();  
+                        B = B.toUpperCase();
+                    }
+    
+                    if(A < B) {
+                        return order == 'asc' ? -1 : 1;
+                    }
+                    if(A > B) {
+                        return order == 'asc' ? 1 : -1;
+                    }
+                    return 0;
+                });
+                $.each(rows, function(index, row){
+                    $('#nba_table').children('tbody').append(row);
+                });
+            }
+        });
+    </script>    
+</head>
+<body>
+    <h1>NBA Teams List</h1>
+    <table id="nba_table" border="1">
+        <thead>
+            <tr>
+                <th data-column="0" data-order="desc" data-numeric="false">Team Name &#9650</th>
+                <th data-column="1" data-order="desc" data-numeric="false">Founded Year &#9650</th>
+                <th data-column="2" data-order="desc" data-numeric="true">Championships Won &#9650</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for team in teams %}
+            <tr>
+                <td>{{ team.team_name }}</td>
+                <td>{{ team.founded_year }}</td>
+                <td>{{ team.championships_won }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

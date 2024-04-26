@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NFL Teams</title>
+</head>
+<body>
+    <h1>NFL Teams List</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Team Name</th>
+                <th>Head Coach</th>
+                <th>Super Bowl Wins</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for team in teams %}
+            <tr>
+                <td>{{ team.team_name }}</td>
+                <td>{{ team.head_coach }}</td>
+                <td>{{ team.super_bowl_wins }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
